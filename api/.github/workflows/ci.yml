@@ -48,6 +48,11 @@ jobs:
           sleep 1
         done
 
+    - name: Debug - Print current directory and list files
+      run: |
+        pwd
+        ls -la
+
     - name: Run tests
       env:
         PGHOST: localhost
