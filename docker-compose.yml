@@ -1,0 +1,42 @@
+# Docker Compose configuration for microservices application
+# Version 3.8 of the compose file format
+version: '3.8'
+
+services:
+  # API service - Node.js application
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"  # Maps container port 3000 to host port 3000
+    depends_on:
+      - db  # Ensures database is started before API
+    environment:
+      - PGHOST=db
+      - PGUSER=postgres
+      - PGPASSWORD=postgres
+      - PGDATABASE=mydb
+      - PGPORT=5432
+
+  # PostgreSQL database service
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"  # Maps container port 5432 to host port 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data  # Persists database data
+
+  # Git service for version control operations
+  git:
+    image: alpine/git
+    volumes:
+      - .:/git  # Mounts current directory to /git in container
+    working_dir: /git
+    command: tail -f /dev/null  # Keeps container running
+
+# Named volume for persistent database storage
+volumes:
+  db_data:

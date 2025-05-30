@@ -1,0 +1,53 @@
+# Steps to Run the Docker Microservices Project
+   ```
+
+1. Start all the Docker containers and build the images:
+   ```
+   docker-compose up --build
+   ```
+
+2. Wait until you see logs showing:
+   - `PostgreSQL init process complete; ready for start up.`
+   - `API running on port 3000`
+
+3. Open a new terminal window and run the following to connect to the PostgreSQL container:
+   ```
+   docker ps
+   ```
+
+4. Find the name of the database container (should look like `docker-microservices-db-1`) and then run:
+   ```
+   docker exec -it docker-microservices-db-1 psql -U postgres -d mydb
+   ```
+
+5. Inside the PostgreSQL shell, run the following SQL to create the `users` table:
+   ```sql
+   CREATE TABLE users (
+     id SERIAL PRIMARY KEY,
+     name TEXT,
+     email TEXT
+   );
+   ```
+
+6. Exit the PostgreSQL shell by typing:
+   ```
+   \q
+   ```
+   psql -U myuser -d mydb
+   ```
+
+7. Use Postman or any HTTP client to test the API:
+   - POST   http://localhost:3000/users
+   - GET    http://localhost:3000/users
+   - PUT    http://localhost:3000/users/:id
+   - DELETE http://localhost:3000/users/:id
+
+8. When you're done, stop all containers:
+   - Press `Ctrl + C` in the terminal where Docker is running
+   - Then run:
+     ```
+     docker-compose down
+     ```
+
+
+
